@@ -1,0 +1,25 @@
+<html>
+<head>
+  <title>A D3 chart</title>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+    <script>
+        var ratData = [400, 300, 300, 600];
+        //Seleccionamos el body y luego le agregamos un svg
+        var svg = d3.select('body')
+            .append('svg')
+              .attr('width', 500)
+              .attr('height', 150);
+
+        d3.selectAll('rect')
+        .data(ratData)
+        .attr('height', function(d){
+            return d/10 * 1.5;
+        })
+        .attr('y', function(d){
+            return 150 - d/10 * 1.5;
+        });
+    </script>
+</body>
+</html>

@@ -2,62 +2,58 @@
 
 ## Setup pruebas
 
-### Google Map Overlay
+### Mapbox with D3
 
-> D3 sobre un mapa de google maps
+> D3 sobre un mapa de mapbox. Se grafican polígonos de un topoJSON.
 
-En la línea 24 de `basic_googleMap_Overlay.html` reemplazar API_KEY por la que mandé por slack.
-
-Si abrimos `basic_googleMap_Overlay.html` en el navegador va a mostrar el siguiente error:
-
-> d3.v3.min.js:1 Access to XMLHttpRequest at 'file:///...%20Local/stations.json' from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https.
-
-Para evitarlo hay que abrir el archivo montando un servidor local. Una forma sencilla de hacerlo es con `http-server` en node. Pre-requisito: instalar [node](https://nodejs.org/es/download/).
+Abrir el archivo montando un servidor local. Una forma sencilla de hacerlo es con `http-server` en node. Pre-requisito: instalar [node](https://nodejs.org/es/download/).
 
 ```bash
 npm install http-server -g
-cd ../GoogleMaps with D3 Overlay - Local
+cd ../mapbox_with_D3
 http-server
 ```
 
 Luego en el navegador ir a [localhost:8080](localhost:8080) y seleccionar el archivo html.
 
-### Reading topoJSON
+1. Generar grilla con /tools/geoJson_grid
 
-> Leer un archivo en formato topoJSON (vendría en ese formato del servidor) y mostrarlo usando D3.
+   abrir `index.html`
 
-Todavía no sé cómo hacer que el zoom inicial sea aquel que muestra de cerca todas las figuras dibujadas, por eso al correr esta prueba pareciera que no hay nada, pero al hacer zoom se puede encontrar un polígono negro.
+   Se genera el arvhivo `grid.json` en formato geoJSON.
 
-Me [basé](https://www.youtube.com/watch?v=045-bsOsbJc) en este tutorial.
+2. Recortar grilla con máscara del predio
+   POR HACER... usar [esto](https://github.com/mfogel/geojson-clipping)
 
-Dibujé un geoJSON usando [esta](http://geojson.io/#map=16/-33.4991/-70.6125) página, el resultado lo copié en el archivo `geojson.json`
+3. Convertir geoJSON a topoJSON
 
-Para crear el topoJSON (que llegaría del servidor) usé:
+   ```bash
+   npm install topojson-server -g
+   geo2topo geojson-grid.json > topojson-grid.json
+   ```
 
-```bash
-npm install topojson-server -g
-geo2topo zonas=geojson.json > topojson.json
-```
 
-Más instrucciones [aqui](https://github.com/topojson/topojson-server/blob/master/README.md#geo2topo)
-
-### Reading topoJSON con Overlay (Intento 1)
-
-Intenté combinar las 2 pruebas anteriores, pero no me ha funcionado.
 
 ## Por hacer
 
-- [x] Cargar mapa de google maps
-- [x] Graficar puntos con D3
+- [x] Cargar mapa de mapbox
 - [x] Overlay de D3
-- [ ] Cargar topoJSON
-- [ ] Graficar un área cuyos vértices sean los puntos especificados
+- [x] Graficar puntos con D3
+- [x] Convertir topoJSON a geoJSON
+- [x] Cargar polígonos de un geoJSON
+- [x] Generar topoJSON con valor de temperatura por celda
+- [ ] Mostrar valor de temperatura por celda en color
+- [ ] Mostrar simbología
+- [ ] Desplegar valor onHover
+- [ ] Desplegar ventana con valor secundario onClick
+- [ ] Poder mostrar puntos y áreas de forma simultánea
 
 ## Herramientas
 
 Se encuentran en la carpeta `./tools`
 
 - shapefile: librería para convertir `.shp` a geoJSON
+- geoJSON-grid: versión de [geojson-grid](https://github.com/cityofaustin/geojson-grid) que modifiqué con la que se puede crear una grilla en formato geoJSON.
 
 ## Notas
 

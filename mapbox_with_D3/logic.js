@@ -21,7 +21,9 @@ var transform = d3.geo.transform({ point: projectPoint });
 var path = d3.geo.path().projection(transform);
 // Load map and dataset
 map.on('load', function () {
-    d3.json("data/geojson-area.json", function (err, data) {
+    d3.json("data/topojson-grid.json", function (err, data) {
+        //Convertimos topoJSON a geoJSON
+        var data = topojson.feature(data, data.objects.zonas);
         drawData(data);
     });
 });
@@ -41,6 +43,7 @@ function projectPoint(lon, lat) {
 var polygons;
 function drawData(data) {
     console.log("draw data");
+    
     // Add polygons
     polygons = svg.selectAll("path")
         .data([data])
